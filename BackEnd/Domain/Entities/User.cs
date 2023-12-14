@@ -18,4 +18,7 @@ public partial class User : BaseEntity
     public virtual ICollection<Pedido> Pedidos { get; set; } = new List<Pedido>();
 
     public virtual ICollection<Transaccion> Transaccions { get; set; } = new List<Transaccion>();
+    public ICollection<Rol> Rols { get; set; } = new HashSet<Rol>();
+    public ICollection<RefreshToken> RefreshTokens { get; set; } = new HashSet<RefreshToken>();
+    public ICollection<UserRol> UsersRols { get; set; }
 }

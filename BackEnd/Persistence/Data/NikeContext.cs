@@ -38,7 +38,10 @@ public partial class NikeContext : DbContext
     public virtual DbSet<Transaccion> Transacciones { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
-
+    public virtual DbSet<Rol> Rols { get; set; }
+    public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
+    public virtual DbSet<UserRol> UserRols { get; set; }
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder

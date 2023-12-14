@@ -10,22 +10,58 @@ namespace Persistence.Data.Configuration
 {
     public class UserConfiguration : IEntityTypeConfiguration<User>
     {
-        public void Configure(EntityTypeBuilder<User> entity)
+        public void Configure(EntityTypeBuilder<User> builder)
         {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("user");
-
-            entity.Property(e => e.Id).ValueGeneratedNever();
-            entity.Property(e => e.Email)
-                .IsRequired()
-                .HasMaxLength(100);
-            entity.Property(e => e.Password)
-                .IsRequired()
-                .HasMaxLength(255);
-            entity.Property(e => e.Username)
-                .IsRequired()
+            builder.HasKey(e => e.Id).HasName("PRIMARY");
+            builder.ToTable("user");
+                
+                builder.Property(p => p.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("ID");
+                
+                builder.Property(p => p.Username)
+                .HasColumnName("username")
+                .HasColumnType("varchar")
                 .HasMaxLength(50);
+
+
+                builder.Property(p => p.Password)
+                .HasColumnName("password")
+                .HasColumnType("varchar")
+                .HasMaxLength(255)
+                .IsRequired();
+
+                builder.Property(p => p.Email)
+                .HasColumnName("email")
+                .HasColumnType("varchar")
+                .HasMaxLength(100)
+                .IsRequired();
+
+                builder
+                .HasMany(p => p.Rols)
+                .WithMany(r => r.Users)
+                .UsingEntity<UserRol>(
+
+                j => j
+                .HasOne(pt => pt.Rol)
+                .WithMany(t => t.UsersRols)
+                .HasForeignKey(ut => ut.RolId),
+
+                j => j
+                .HasOne(et => et.Usuario)
+                .WithMany(et => et.UsersRols)
+                .HasForeignKey(el => el.UsuarioId),
+
+                j =>
+                {
+                    j.ToTable("userRol");
+                    j.HasKey(t => new { t.UsuarioId, t.RolId });
+
+                });
+
+                builder.HasMany(p => p.RefreshTokens)
+                .WithOne(p => p.User)
+                .HasForeignKey(p => p.UserId);
         }
     }
 }
