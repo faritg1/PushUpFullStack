@@ -33,6 +33,7 @@ CREATE TABLE Categoria (
 CREATE TABLE ProductoCategoria (
     IdProductoFk INT NOT NULL,
     IdCategoriaFk INT NOT NULL,
+    PRIMARY KEY (IdProductoFk, IdCategoriaFk),
     CONSTRAINT FkProducto FOREIGN KEY (IdProductoFk) REFERENCES Producto(Id),
     CONSTRAINT FkCategoria FOREIGN KEY (IdCategoriaFk) REFERENCES Categoria(Id)
 );
